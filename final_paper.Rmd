@@ -1,0 +1,15 @@
+---
+title: "Interaction of Email Disclosure With Invasive Survey Questions"
+author: "Joe Izenman & Danish Iqbal"
+date: "August 22, 2017"
+header-includes:
+  - \setlength\parindent{24pt}
+output: pdf_document
+abstract: "Abstract text goes here."
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
