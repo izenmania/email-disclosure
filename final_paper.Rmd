@@ -12,7 +12,7 @@ abstract: "Data collection and user tracking, already ubiquitous in online servi
 bibliography: references/references.bib
 csl: references/apa.csl
 nocite: |
-  @reshape2 @data.table @ggplot2 @stargaer @xtabke @rlang
+  @reshape2 @data.table @ggplot2 @stargaer @xtabke @rlang @sensitive @eprivacy @calculus @valuating anonymity
 ---
 
 ```{r setup, include=FALSE}
@@ -69,32 +69,36 @@ color_neg <- "#E69F00"
 
 # Introduction
 
-While much has been written on privacy and how individuals disclose personal detail under different circumstances, few experiments convey the type of information persons disclose when they are able to be identified.
+Privacy is an inherently contextual concern. Particularly in the internet age, individuals are frequently comfortable revealing various subsets of their personal identity, depending on the particular circumstances, while avoiding full disclosure where possible. For example, an individual may be comfortable providing a retailer with full name and billing information, and allowing them to carefully track and analyze shopping behavior. The same person may share intimate details of intensely personal problems on a message board or blog, under the guise of a pseudonym or screen name. But they would vigorously protest any attempt to combine these two facets into a cohesive picture of their identity.
 
-Previous work looks specifically at the contextual environment in which personal information is disclosed. It has generally been found that in mediums signaling some degree of being unprofessional, responders are more likely to disclose embarrassing details about themselves. It is also found that signaling privacy may change how questions are responded to. Our work builds on this body of experiments to see the type of responses provided when personally identifiable information is asked for. 
+Nearly all online services, free or paid, require some amount of disclosure. Frequently this is as simple as an email address, a request most users likely find reasonable for unique identification, and the possibility of direct contact. However, use of this unique identifier also permits various services to combine their records on the same individual, a use case frequently tucked away in terms of use and privacy policies, and overlooked by users.
+
+Some more savvy frequenters of these services may resort to a dump email, separate from their main personal or business-friendly identity, when they want to isolate a given behavior. However, technology is rapidly outpacing such efforts. The use of the same dump email repeatedly still allows a cohesive picture of behavior to be formed, and techniques such as browser fingerprinting can permit high probability linkage between multiple online identities.
+
+In this study, we investigate whether an individual's willingness to disclose identity information is linked to the level of invasiveness they perceive in other information being collected. Specifically, we request email disclosure, and ask a series of behavior questions of varying levels of sensitivity. We seek to understand whether users find invasive questioning a sufficient deterrent to disclosure—or whether email disclosure is sufficient deterrent from honestly answering the aforementioned questions.
 
 
 # Background
 
-While our experiment isn’t conducted in the presence of an interviewer, divulging of sensitive information is dependent on context. For example, in the case of surveys administered by physical interviewers, Tourangeau and Yin [@sensitive] summarize that respondents are more likely to report sensitive information when questions are self administered, rather that being administered by an interviewer. A survey responder is less likely to disclose information if they interact with someone (such as an interviewer) who may learn something embarrassing or something that could be used to punish the survey responder.
+While our experiment isn’t conducted in the presence of an interviewer, divulging of sensitive information is dependent on context. For example, in the case of surveys administered by physical interviewers, Tourangeau and Yan (2007) summarize that respondents are more likely to report sensitive information when questions are self administered, rather than being administered by an interviewer. A survey responder is less likely to disclose information if they interact with someone (such as an interviewer) who may learn something embarrassing or something that could be used to punish the survey responder.
 
-Tourangeau and Yan also write that using familiar wording can increase reporting as well as question-wording strategies. For example, in collecting income, financial, and other numerical information, researchers sometimes use a technique called unfolding brackets to collect partial information from respondents who are unwilling or unable to provide exact amounts.
+Tourangeau and Yan (2007) also write that using familiar wording can increase reporting as well as question-wording strategies. For example, in collecting income, financial, and other numerical information, researchers sometimes use a technique called unfolding brackets to collect partial information from respondents who are unwilling or unable to provide exact amounts.
 
-How much personal information is given depends on the context it is delivered through. Our experiment borrows some methodology from "Strangers on a Plane" [@strangers]. John, Acquisti, et al conduct a series of experiment where the context in which sensitive questions are asked is changed. A total of four experiments are conducted. The first experiment changes how a sensitive question is asked, whether directly or indirectly. The experiment reveals that a responder is more likely to divulge private information when a question is asked indirectly. Therefore, the way a question is worded may get a surveyor more responses about personal information.
+How much personal information is given depends on the context it is delivered through. Our experiment borrows some methodology from "Strangers on a Plane" [@strangers]. John, Acquisti, and Lowenstein (2011) conduct a series of experiment where the context in which sensitive questions are asked is changed. A total of four experiments are conducted. The first experiment changes how a sensitive question is asked, whether directly or indirectly. The experiment reveals that a responder is more likely to divulge private information when a question is asked indirectly. Therefore, the way a question is worded may get a surveyor more responses about personal information.
 
-Other experiments are conducted in which responders answer personal questions on a professional-looking and an unprofessional looking website versus a baseline website. They found that responders were more likely to reveal personal information in the unprofessional-looking website than they were in the professional. Similarly, when such questions were asked on different types of survey interfaces (unprofessional vs professional), responders were more likely to have answered intrusive questions in the affirmative in the unprofessional looking survey.
+Other experiments are conducted in which responders answer personal questions on a professional-looking and an unprofessional-looking website versus a baseline website. They find that responders were more likely to reveal personal information in the unprofessional-looking website than they were in the professional one. Similarly, when such questions were asked on different types of survey interfaces (unprofessional versus professional), responders were more likely to have answered intrusive questions in the affirmative in the unprofessional-looking survey.
 
-In their final experiment, John, Acquisti, et al cue the responder to privacy concerns from the beginning and then see how the survey is responded to. They find that the difference in how unprofessional and professional surveys are responded is eliminated when privacy concerns are relayed in the beginning. Signaling privacy concerns prior to a survey may change how questions are responded to, a characteristics that we hope to find in our experiment.
+In their final experiment, John, Acquisti, and Lowenstein (2011) cue the responder to privacy concerns from the beginning and then see how the survey is responded to. They find that the difference in how unprofessional and professional surveys are responded to is eliminated when privacy concerns are relayed in the beginning. Signaling privacy concerns prior to a survey may change how questions are responded to, a characteristics that we hope to find in our experiment.
 
-Further research on privacy and revelations [@eprivacy] finds that stated preferences for privacy may not align with actual behaviors. They conduct an experiment where users privacy preferences are compared to their interactions on shopping websites. In their experiment, users were asked to fill a questionnaire regarding their privacy preferences. Then  users were given one of two privacy statement; one harsh and one soft, mentioning that their navigation patterns would be recorded during the shopping process. Participants had the option to leave at any time while shopping.
+Further research on privacy and revelations by Spiekermann, Grossklags, and Berendt (2001) finds that stated preferences for privacy may not align with actual behaviors. They conduct an experiment where users privacy preferences are compared to their interactions on shopping websites. In their experiment, users were asked to fill a questionnaire regarding their privacy preferences. Then, users were given one of two privacy statement; one harsh and one soft, mentioning that their navigation patterns would be recorded during the shopping process. Participants had the option to leave at any time while shopping.
 
 There was generally a correlation between users' navigation patterns and their privacy preferences. However, the same was not seen when it came to revealing information about themselves. User were more likely to reveal information about themselves, in contrast to their indicated privacy preferences.
 
-Much of how privacy-related questions are answered depends on the mechanism used for asking them. Knijnenburg and Kobsa [@calculus] write that users tend to forgo their privacy calculus when presented with filled auto-completed forms. In an experiment they present users with three different types of auto-complete forms and observe how likely users are to use the auto-complete options. Despite selective privacy preferences, users are likely to over-disclose information when using the traditional auto-complete present on many web browsers.
+Much of how privacy-related questions are answered depends on the mechanism used for asking them. Knijnenburg, Kobsa and Jin (2013) write that users tend to forgo their privacy calculus when presented with filled auto-completed forms. In an experiment they present users with three different types of auto-complete forms and observe how likely users are to use the auto-complete options. Despite selective privacy preferences, users are likely to over-disclose information when using the traditional auto-complete present on many web browsers.
 
-The level of personal information revealed may be dependent on the audience. Quian and Scott look at bloggers and how much of their private information they choose to disclose. They find that bloggers revelation of personal details is contingent on how well they know their target audience. The more personally acquainted a blogger is with their audience, they more likely they are to disclose personal details about themselves.
+The level of personal information revealed may be dependent on the audience. Quian and Scott (2007) look at bloggers and how much of their private information they choose to disclose. They find that bloggers revelation of personal details is contingent on how well they know their target audience. The more personally acquainted a blogger is with their audience, they more likely they are to disclose personal details about themselves.
 
-Finally, revelation may be dependent on how you see your traits vis-a-vis societal acceptance of norms. Huberman, et al find that responders are less likely to disclose information when their response has higher deviation from the norm. They conduct an experiment where experimenters auction personal information about themselves. They find that when a trait is more socially undesirable, the individual demands more compensation for revealing it. For example, the more a person weight was above the median, the higher the compensation they would demand. Their work shows us how different social scenarios and indicators may be valued differently by how much the trait is considered a deviation from the norm.
+Finally, revelation may be dependent on how you see your traits vis-a-vis societal acceptance of norms. Huberman and Adar find that responders are less likely to disclose information when their response has higher deviation from the norm. They conduct an experiment where experimenters auction personal information about themselves. They find that when a trait is more socially undesirable, the individual demands more compensation for revealing it. For example, the more a persons weight was above the median, the higher the compensation they would demand. Their work shows us how different social scenarios and indicators may be valued differently based on how much the trait is considered a deviation from the norm.
 
 Our experiment touches on many of these issues as users are asked personal questions about social behaviors and are asked to provide personal contact information. 
 
@@ -103,7 +107,7 @@ Our experiment touches on many of these issues as users are asked personal quest
 
 ## Overview
 
-The specific goal of this study is to examine the interaction–in both directions–of personal identity disclosure on the response to a variety of questions. How do revelations about one’s past behavior, initially made anonymously, affect their willingness to voluntarily identify and permit future contact? And, conversely, how do the responses to the same kinds of questions change when the respondent has already provided that same information?
+The specific goal of this study is to examine the interaction, in both directions, of personal identity disclosure on the response to a variety of questions. How do revelations about one’s past behavior, initially made anonymously, affect their willingness to voluntarily identify and permit future contact? And, conversely, how do the responses to the same kinds of questions change when the respondent has already provided that same information?
 
 The core of the design is to ask respondents for the answers to a variety of questions, which have been pre-classified by their sensitivity and perceived invasiveness, with the intent to answer the following high level research questions:
 
@@ -116,7 +120,7 @@ The answers to these questions, taken together, can help compose a useful pictur
 
 ## Question Selection
 
-The basis of our analysis is a framework of questions determined to be at different levels of “sensitivity”. Tourangeau and Yan (2007) offer several models of question sensitivity, including intrusiveness and threat of disclosure. Here we focus on their third notion, that of “social desirability.” Given clear social norms about specific behavior, conforming to those norms is socially desirable, and diverging from them is undesirable. Questions that inquire directly about socially undesirable behavior are perceived as more sensitive. In particular, this perception of sensitivity is linked to the an affirmative admission. Someone who has, in truth, not violated a social norm is unlikely to find the question sensitive—that is, unless they are offended by the nature of the question itself, violating intrusiveness rather than desirability.
+The basis of our analysis is a framework of questions determined to be at different levels of “sensitivity”. Tourangeau and Yan (2007) offer several models of question sensitivity, including intrusiveness and threat of disclosure. Here we focus on their third notion, that of “social desirability.” Given clear social norms about specific behavior, conforming to those norms is socially desirable, and diverging from them is undesirable. Questions that inquire directly about socially undesirable behavior are perceived as more sensitive. In particular, this perception of sensitivity is linked to an affirmative admission. Someone who has, in truth, not violated a social norm is unlikely to find the question sensitive—that is, unless they are offended by the nature of the question itself, violating intrusiveness rather than desirability.
 
 There is some concern that a clear disparity in the desirability of behaviors mentioned in the survey may encourage response bias. If some questions are about blatantly positive behaviors, while others address extreme violations of social norms, respondents may be more likely to cater their answers to perception of these extremes. To combat this, we narrow the gap in social desirability, by focusing on desirable and undesirable forms of a single kind of behavior. In this case, all questions formulated are on different kinds of lies and deception. Social norms consider lies to be generally undesirable, but so-called “white lies”, are much more accepted.
 
@@ -131,7 +135,7 @@ Central to a successful study of these issues is the classification of behaviors
 
 An initial list of twenty different kinds of lies was composed by the researchers (enumerated, with results, in Table 2 below). Some of these behaviors were deliberately selected based on prior belief regarding their social desirability, in the hopes of guaranteeing a wide range of options. However, these priors were not incorporated into later analysis, to allow for the possibility that our own notions of social desirability may not be shared by the population at large.
 
-In order to prevent question overload, each respondent was shown a randomly selected subset of five behaviors. Each question asked whether or not they believed the given behavior was considered socially acceptable (Figure 2). All responses were then aggregated, and each behavior analyzed using a binomial test. The null hypothesis of this test was a probability of 0.5—that each behavior would be divided evenly between desirable and undesirable. Any questions with a statistically significant divergence (alpha = 0.05) from the middle would be flagged with the majority vote. These questions would be used in the main survey, unless a severe class imbalance between question types arose.
+In order to prevent question overload, each respondent was shown a randomly selected subset of five behaviors. Each question asked whether or not they believed the given behavior was considered socially acceptable (Figure 1). All responses were then aggregated, and each behavior analyzed using a binomial test. The null hypothesis of this test was a probability of 0.5—that each behavior would be divided evenly between desirable and undesirable. Any questions with a statistically significant divergence (alpha = 0.05) from the middle would be flagged with the majority vote. These questions would be used in the main survey, unless a severe class imbalance between question types arose.
 
 ![Pre-survey question sample](images/presurvey_questions.png)
 
@@ -155,15 +159,15 @@ total_responses <- presurvey_rates$`Total Responses`
 response_rate <- presurvey_rates$`Avg. Response Rate`
 ```
 
-`r total_surveys` pre-surveys were collected, containing `r total_responses` question responses, providing an average of `r response_rate` 63.25 responses per behavior. Due to random assignment, some behaviors were seen more often, and some less (Table 1), but all hovered in an acceptable range.
+`r total_surveys` pre-surveys were collected, containing `r total_responses` question responses, providing an average of `r response_rate` responses per behavior. Due to random assignment, some behaviors were seen more often, and some less (Table 1), but all hovered in an acceptable range.
+
+Analysis provided sixteen statistically significant behavior evaluations. Ten were deemed socially acceptable, and six unacceptable (Table 2, Figure 2). Some of these results were within our expectations—the socially acceptable nature of encouraging belief in Santa Claus is no surprise, for example.
 
 ```{r echo=FALSE, results="asis"}
 kable(presurvey_rates, caption="Presurvey Response Rate")
 ```
 
 Analysis provided sixteen statistically significant behavior evaluations. Ten were deemed socially acceptable, and six unacceptable (Table 2, Figure 2). Some of these results were within our expectations—the socially acceptable nature of encouraging belief in Santa Claus is no surprise, for example.
-
-\newpage
 
 ```{r echo=FALSE, results="asis"}
 questions <- presurvey_results[, .(
@@ -191,7 +195,7 @@ ggplot(presurvey_results) +
 
 ### Question Presentation
 
-There are several possible ways to form questions from a list of behaviors. John et al. (2010) compare direct to indirect questioning. Rather than directly asking about a given behavior, their method of indirect questioning provides multiple locations to rank the behavior ethically, based on whether the respondent has performed that behavior in the past. They find that this method increases admission rates for questionable behaviors.
+There are several possible ways to form questions from a list of behaviors. John, Acquisti, and Lowenstein (2011) compare direct to indirect questioning. Rather than directly asking about a given behavior, their method of indirect questioning provides multiple locations to rank the behavior ethically, based on whether the respondent has performed that behavior in the past. They find that this method increases admission rates for questionable behaviors.
 
 For purposes of our study, a higher baseline admission rate is not necessarily beneficial. Among our research goals is an investigation of how prior email disclosure impacts admission rates of socially undesirable behaviors. For this reason, and for simplicity of analysis, we have elected to use direct questioning. Each behavior is presented as a simple yes/no question, of the format, “Have you, or would you, lie about x?” The inclusion of “or would you” attempts to account for cases where the respondent has not, in the course of their normal life, been presented the opportunity for the behavior. For example, someone who has never suffered from a sexually transmitted disease would not have had the opportunity to lie about one.
 
@@ -199,9 +203,9 @@ For purposes of our study, a higher baseline admission rate is not necessarily b
 
 Unlike the pre-survey, we elected to present the full course of available questions to all respondents. By ensuring that everyone sees the full spread of sensitive questions—in addition to the others—we maximize the possibility of seeing a treatment effect between the groups. There is some imbalance between the groups—10 desirable behaviors, and 6 undesirable—but this was not deemed extreme enough to merit editing of the list.
 
-The survey begins with a brief description of the purpose of the survey, and instructions on the remaining survey. It is presented as as study of “prevalence of different forms of lying and deceptive behavior in the population.” Visitors are instructed to answer yes or no, based on past behavior, and to truthfully consider any behaviors which they have not yet had the opportunity to enact.
+The survey begins with a brief description of the purpose of the survey, and instructions on the remaining survey. It is presented as as study of “prevalence of different forms of lying and deceptive behavior in the population.” Visitors are instructed to answer yes or no, based on past behavior, and to truthfully consider any behaviors which they have not yet had the opportunity to enact (Figure 3).
 
-Once the survey begins in earnest, each respondent is randomly placed into one of two groups, referred to hereafter as the “pre” and “post” groups. All are asked optionally for their email address, nominally for the purpose of conducting future follow-up research.
+Once the survey begins in earnest, each respondent is randomly placed into one of two groups, referred to hereafter as the “pre” and “post” groups. All are asked optionally for their email address, nominally for the purpose of conducting future follow-up research (Figure 4).
 
 ![Main survey question example](images/survey_questions.png)
 
