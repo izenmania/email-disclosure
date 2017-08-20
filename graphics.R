@@ -1,4 +1,5 @@
 library(ggplot2)
+library(data.table)
 
 questions_long[, .("value"=sum(value, na.rm=TRUE)), by=variable]
 q_all <- c("Q1",  "Q2",  "Q3",  "Q4",  "Q5",
@@ -6,13 +7,13 @@ q_all <- c("Q1",  "Q2",  "Q3",  "Q4",  "Q5",
            "Q11", "Q12", "Q13", "Q14", "Q15", 
            "Q16", "Q17", "Q18", "Q19", "Q20")
 
-color_pos <- "#56B4E9"
-color_neg <- "#E69F00"
+color_pos <- "#3333CC"
+color_neg <- "#CC3333"
 
 # Reponse rate to questions, colored by type
 ggplot(
   questions_long[, .("value"=sum(value, na.rm=TRUE)), by=variable], 
-  aes(factor(variable, levels=q_all), value, fill=(variable %in% q_positive))
+  aes(factor(variable, levels=q_all), value, fill=(variable %in% q_positive)), fontface="Times"
   ) +
   geom_col() +
   scale_fill_manual(name="Question Type", values=c(color_neg, color_pos), labels=c("Socially Unacceptable", "Socially Acceptable")) +

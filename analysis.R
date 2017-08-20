@@ -30,30 +30,37 @@ questions_long = main_responses_long[
 
 # ANALYSIS ONE: IMPACT OF TIMING
 # Q1: Is there a difference in email disclosure between pre and post?
-a1.q1 <- t.test(email ~ email_timing, main_responses_wide)
-a1.q1
+a1.q1 <- lm(email ~ email_timing, main_responses_wide)
+summary(a1.q1)
+# Insignificant difference, but it is in the correct direction (slightly less disclosure in the post group)
 
 # Q2: Is there a difference in "Yes" answers between pre and post?
-a1.q2 <- t.test(yes_all ~ email_timing, main_responses_wide)
-a1.q2
+a1.q2 <- lm(yes_all ~ email_timing, main_responses_wide)
+summary(a1.q2)
+# Same
 
 # Q3: Is there a difference in "Yes" answers on invasive questions
 #     between pre and post?
-a1.q3 <- t.test(yes_neg ~ email_timing, main_responses_wide)
-a1.q3
+a1.q3 <- lm(yes_neg ~ email_timing, main_responses_wide)
+summary(a1.q3)
+# Opposite expected direction and WAY not significant.
 
 # ANALYSIS TWO: IMPACT OF QUESTIONS ON ANSWERS
 # Q1: Does the invasiveness of a question impact the number of yes 
 #     answers it receives?
 
-a2.q1 <- t.test(value ~ negative, questions_long)
-a2.q1
+a2.q1 <- lm(value ~ negative, questions_long)
+summary(a2.q1)
+# V significant (the only one), medium effect size (R^2).
+# Definitely fewer yes answers on socially undesirable behaviors.
+# Unclear whether people don't do them or just don't admit to them.
 
 # ANALYSIS THREE: IMPACT OF QUESTIONS ON DISCLOSURE
 # Q1: In the post group, is there a difference in email disclosure caused 
 #     by the number of "Yes" answers?
 a3.q1 <- lm(email ~ yes_all, main_responses_wide[email_timing==1])
 summary(a3.q1)
+# Insignificant, v. small effect, 
 
 # Q2: In the post group, is there a difference in email disclosure caused
 #     by the number of invasive questions answered "Yes"?
@@ -63,12 +70,13 @@ summary(a3.q2)
 # ANALYSIS FOUR: IMPACT OF DISCLOSURE ON QUESTIONS
 # Q1: In the pre group, is there a difference in number of "Yes" answers
 #     caused by email disclosure?
-a4.q1 <- t.test(yes_all ~ email, main_responses_wide[email_timing==0])
-a4.q1
+a4.q1 <- lm(yes_all ~ email, main_responses_wide[email_timing==0])
+summary(a4.q1)
+# Nope
 
 
 # Q2: In the pre group, is there a difference in number of "Yes" answers
 #     to invasive questions caused by email disclosure?
 a4.q2 <- lm(yes_neg ~ email, main_responses_wide[email_timing==0])
 summary(a4.q2)
-
+# Noooooope
