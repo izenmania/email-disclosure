@@ -4,11 +4,15 @@ author: "Joe Izenman & Danish Iqbal"
 date: "August 22, 2017"
 header-includes:
   - \setlength\parindent{24pt}
+  - \usepackage{setspace}\doublespacing
 output:
   pdf_document:
     number_sections: true
 abstract: "Data collection and user tracking, already ubiquitous in online services, continues to grow in volume and breadth. Many contexts rely on the willingness of the user to disclose some form of uniquely identifying information. Many industries, well stocked in details about online behavior, seek to better understand their users and customers by collecting increasingly personal information about their offline life as well. It is increasingly important for both corporations and private citizens to understand the consequences of connecting offline behavior patterns to online identifiers. Our work seeks to reveal a portion of the contextual interaction between revelation of sensitive behavioral information, and the disclosure of personal contact information, in the context of a survey about socially desirable and undesirable activities."
-bibliography: references.bib
+bibliography: references/references.bib
+csl: references/apa.csl
+nocite: |
+  @reshape2 @data.table @ggplot2 @stargaer @xtabke @rlang
 ---
 
 ```{r setup, include=FALSE}
@@ -125,9 +129,9 @@ Central to a successful study of these issues is the classification of behaviors
 
 #### Methodology
 
-An initial list of twenty different kinds of lies was composed by the researchers (enumerated, with results, in Table ??? below). Some of these behaviors were deliberately selected based on prior belief regarding their social desirability, in the hopes of guaranteeing a wide range of options. However, these priors were not incorporated into later analysis, to allow for the possibility that our own notions of social desirability may not be shared by the population at large.
+An initial list of twenty different kinds of lies was composed by the researchers (enumerated, with results, in Table 2 below). Some of these behaviors were deliberately selected based on prior belief regarding their social desirability, in the hopes of guaranteeing a wide range of options. However, these priors were not incorporated into later analysis, to allow for the possibility that our own notions of social desirability may not be shared by the population at large.
 
-In order to prevent question overload, each respondent was shown a randomly selected subset of five behaviors. Each question asked whether or not they believed the given behavior was considered socially acceptable (Fig ???). All responses were then aggregated, and each behavior analyzed using a binomial test. The null hypothesis of this test was a probability of 0.5—that each behavior would be divided evenly between desirable and undesirable. Any questions with a statistically significant divergence (alpha = 0.05) from the middle would be flagged with the majority vote. These questions would be used in the main survey, unless a severe class imbalance between question types arose.
+In order to prevent question overload, each respondent was shown a randomly selected subset of five behaviors. Each question asked whether or not they believed the given behavior was considered socially acceptable (Figure 2). All responses were then aggregated, and each behavior analyzed using a binomial test. The null hypothesis of this test was a probability of 0.5—that each behavior would be divided evenly between desirable and undesirable. Any questions with a statistically significant divergence (alpha = 0.05) from the middle would be flagged with the majority vote. These questions would be used in the main survey, unless a severe class imbalance between question types arose.
 
 ![Pre-survey question sample](images/presurvey_questions.png)
 
@@ -135,23 +139,31 @@ Since demographic details or specific subgroups are not the focus of this study,
 
 #### Results
 
-253 pre-survey responses were collected, with an average of 63.25 responses per behavior. Due to random assignment, some behaviors were seen more often, and some less (Table ???), but all hovered in an acceptable range.
-
 ```{r echo=FALSE, results="asis"}
+per_survey <- 5
+
 presurvey_rates <- presurvey_results[, .(
+  "Total Surveys"=sum(total_responses)/per_survey,
   "Total Responses"=sum(total_responses), 
   "Avg. Response Rate"=mean(total_responses), 
   "Min. Response Rate"=min(total_responses), 
   "Max. Response Rate"=max(total_responses)
   )]
 
-kable(t(presurvey_rates), caption="Presurvey Response Rate")
+total_surveys <- presurvey_rates$`Total Surveys`
+total_responses <- presurvey_rates$`Total Responses`
+response_rate <- presurvey_rates$`Avg. Response Rate`
 ```
 
-Analysis provided sixteen statistically significant behavior evaluations. Ten were deemed socially acceptable, and six unacceptable (Table ???, Figure ???). Some of these results were within our expectations—the socially acceptable nature of encouraging belief in Santa Claus is no surprise, for example.
+`r total_surveys` pre-surveys were collected, containing `r total_responses` question responses, providing an average of `r response_rate` 63.25 responses per behavior. Due to random assignment, some behaviors were seen more often, and some less (Table 1), but all hovered in an acceptable range.
 
-Of particular note was the dichotomy of lying about income (acceptable), and lying on a tax return (unacceptable). From an information perspective, these are essentially the same deception. They vary only in who they are told to: a non-specific, general audience, or the government.
- 
+```{r echo=FALSE, results="asis"}
+kable(presurvey_rates, caption="Presurvey Response Rate")
+```
+
+Analysis provided sixteen statistically significant behavior evaluations. Ten were deemed socially acceptable, and six unacceptable (Table 2, Figure 2). Some of these results were within our expectations—the socially acceptable nature of encouraging belief in Santa Claus is no surprise, for example.
+
+\newpage
 
 ```{r echo=FALSE, results="asis"}
 questions <- presurvey_results[, .(
@@ -161,6 +173,8 @@ questions <- presurvey_results[, .(
   )]
 print(xtable(questions, align="lp{30em}rl", caption="Presurvey Questions and Results"))
 ```
+
+Of particular note was the dichotomy of lying about income (acceptable), and lying on a tax return (unacceptable). From an information perspective, these are essentially the same deception. They vary only in who they are told to: a non-specific, general audience, or the government.
 
 ```{r echo=FALSE, fig.cap="Presurvey Responses"}
 ggplot(presurvey_results) +
@@ -206,7 +220,7 @@ As with the pre-survey, respondents were recruited from Mechanical Turk, and pai
 
 ## Hypotheses for Analysis
 
-Based on the original research questions, and the specific formulation of the questions as described above, we have developed a specific sequence of hypotheses to test on the acquired survey data (Table ???).
+Based on the original research questions, and the specific formulation of the questions as described above, we have developed a specific sequence of hypotheses to test on the acquired survey data.
 
 ### What is the impact of the timing of our identity disclosure request on all responses?
 
@@ -274,12 +288,16 @@ stargazer(h1, h2, h3, header=FALSE, title="Impact of disclosure timing",
 
 ### Impact of question type on responses
 
-Our second analysis steps away from each respondent's survey as a unit, and focuses on each individual question, across all responses. Sensitivity of the question does show a highly significant (p < 0.01), medium sized (R^2 = 0.127) effect on affirmative admission rates. The negative direction indicates that respondents are less likely to admit to socially desirable behaviors. Figure 5 demonstrates the clear difference between the sensitive and non-sensitive questions.
+```{r echo=FALSE}
+h4 <- lm(value ~ negative, questions_long)
+h4.sum <- summary(h4)
+```
+
+Our second analysis steps away from each respondent's survey as a unit, and focuses on each individual question, across all responses. Sensitivity of the question does show a highly significant ($p < 0.01$), medium sized ($R^2 = `r round(h4.sum$r.squared, 3)`$) effect on affirmative admission rates. The negative direction indicates that respondents are less likely to admit to socially desirable behaviors. Figure 5 demonstrates the clear difference between the sensitive and non-sensitive questions.
 
 Unfortunately, this study is not equipped to determine whether the effect is due to a reduced willingness to admit behaviors of this nature, or the population at large is genuinely less likely to participate in said behaviors. Given that the evaluation as undesirable is rooted in social norms, the latter seems likely, but any attempt at a ground truth measure of most of these behaviors would be reliant on voluntary disclosure, and thus largely unreliable.
 
 ```{r echo=FALSE, results="asis"}
-h4 <- lm(value ~ negative, questions_long)
 
 stargazer(h4, header=FALSE, title="Impact of question type on responses",
          covariate.labels=c("Question marked as sensitive", "Constant"),
@@ -368,3 +386,7 @@ Additionally, as mentioned above, starting from a broader set of behaviors, and 
 \newpage
 
 # References
+\setlength{\parindent}{-0.2in}
+\setlength{\leftskip}{0.2in}
+\setlength{\parskip}{8pt}
+\noindent
